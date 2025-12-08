@@ -1,969 +1,1497 @@
-#include <stdio.h>
-#include <stdlib.h>
- 
-struct complex
-{
-  int real, img;
-};
- 
-int main()
-{
-  int choice, x, y, z;
-  struct complex a, b, c;
- 
-  while(1)
-  {
-    printf("Press 1 to add two complex numbers.\n");
-    printf("Press 2 to subtract two complex numbers.\n");
-    printf("Press 3 to multiply two complex numbers.\n");
-    printf("Press 4 to divide two complex numbers.\n");
-    printf("Press 5 to exit.\n");
-    printf("Enter your choice\n");
-    scanf("%d", &choice);
- 
-    if (choice == 5)
-      exit(0);
- 
-    if (choice >= 1 && choice <= 4)
-    {
-      printf("Enter a and b where a + ib is the first complex number.");
-      printf("\na = ");
-      scanf("%d", &a.real);
-      printf("b = ");
-      scanf("%d", &a.img);
-      printf("Enter c and d where c + id is the second complex number.");
-      printf("\nc = ");
-      scanf("%d", &b.real);
-      printf("d = ");
-      scanf("%d", &b.img);
-    }
-    if (choice == 1)
-    {
-      c.real = a.real + b.real;
-      c.img = a.img + b.img;
- 
-      if (c.img >= 0)
-        printf("Sum of the complex numbers = %d + %di", c.real, c.img);
-      else
-        printf("Sum of the complex numbers = %d %di", c.real, c.img);
-    }
-    else if (choice == 2)
-    {
-      c.real = a.real - b.real;
-      c.img = a.img - b.img;
- 
-      if (c.img >= 0)
-        printf("Difference of the complex numbers = %d + %di", c.real, c.img);
-      else
-        printf("Difference of the complex numbers = %d %di", c.real, c.img);
-    }
-    else if (choice == 3)
-    {
-      c.real = a.real*b.real - a.img*b.img;
-      c.img = a.img*b.real + a.real*b.img;
- 
-      if (c.img >= 0)
-        printf("Multiplication of the complex numbers = %d + %di", c.real, c.img);
-      else
-        printf("Multiplication of the complex numbers = %d %di", c.real, c.img);
-    }
-    else if (choice == 4)
-    {
-      if (b.real == 0 && b.img == 0)
-        printf("Division by 0 + 0i isn't allowed.");
-      else
-      {
-        x = a.real*b.real + a.img*b.img;
-        y = a.img*b.real - a.real*b.img;
-        z = b.real*b.real + b.img*b.img;
- 
-        if (x%z == 0 && y%z == 0)
-        {
-          if (y/z >= 0)
-            printf("Division of the complex numbers = %d + %di", x/z, y/z);
-          else
-            printf("Division of the complex numbers = %d %di", x/z, y/z);
-        }
-        else if (x%z == 0 && y%z != 0)
-        {
-          if (y/z >= 0)
-            printf("Division of two complex numbers = %d + %d/%di", x/z, y, z);
-          else
-            printf("Division of two complex numbers = %d %d/%di", x/z, y, z);
-        }
-        else if (x%z != 0 && y%z == 0)
-        {
-          if (y/z >= 0)
-            printf("Division of two complex numbers = %d/%d + %di", x, z, y/z);
-          else
-            printf("Division of two complex numbers = %d %d/%di", x, z, y/z);
-        }
-        else
-        {
-          if (y/z >= 0)
-            printf("Division of two complex numbers = %d/%d + %d/%di",x, z, y, z);
-          else
-            printf("Division of two complex numbers = %d/%d %d/%di", x, z, y, z);
-        }
-      }
-    }
-    else
-      printf("Invalid choice.");
- 
-    printf("\nPress any key to enter choice again...\n");
-  }
-}
+import dill
 
-/**************       Bplustree.c      *****************/
-/*  To Compile      gcc -o  Bplustree  Bplustree.c     */  
-/*  To Run          Bplustree  <input                  */
-/*******************************************************/
- 
-#include <stdio.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <string.h>
+source_DF = dill.source.getsource(pandas.DataFrame)
+print(type(source_DF))
+print(len(source_DF))
+print(source_DF[:200])
 
-#ifndef _BTREE_
+source_file_DF = dill.source.getsourcefile(pandas.DataFrame)
+print(source_file_DF)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+sourcelines_DF = dill.source.getsourcelines(pandas.DataFrame)
+print(type(sourcelines_DF))
+print(len(sourcelines_DF))
+print(type(sourcelines_DF[0]))
 
-int OpenIndex(char *Name, int DupKeys);
-/* open or create index file, find free entry in index table,
-    fill in entry, DupKeys is 1 if duplicate keys are allowed, 0 if not,
-    return number of entry in table */
-
-void CloseIndex(int Index);
-/* close Index file, free entry in index info table */
-
-int Insert(int Index, long Key, long Ptr);
-/* insert Key & Ptr in index file, return 0 for success, nonzero for error */
-
-long Lookup(int Index, long Key);
-/* return pointer for entry in Index file <= Key, return -1 if none */
+<type 'str'>
+195262
+class DataFrame(NDFrame):
+    """ Two-dimensional size-mutable, potentially heterogeneous tabular data
+    structure with labeled axes (rows and columns). Arithmetic operations
+    align on both row a
+/Users/XD/anaconda/lib/python2.7/site-packages/pandas/core/frame.py
+<type 'tuple'>
+2
+<type 'list'>
 
 
-#ifdef __cplusplus
-}
-#endif
+import types
 
-#endif
+class Tracing:
+    def __init__(self, name, bases, namespace):
+        """Create a new class."""
+        self.__name__ = name
+        self.__bases__ = bases
+        self.__namespace__ = namespace
+    def __call__(self):
+        """Create a new instance."""
+        return Instance(self)
 
-#define ORDER 64   
-#define BLKSIZE (ORDER*8)
-#define BKTPTRS (ORDER*2 - 1)
-#define NLEN 40
-#define NIDX 20
-#define SEEK_SET  0   
+class Instance:
+    def __init__(self, klass):
+        self.__klass__ = klass
+    def __getattr__(self, name):
+        try:
+            value = self.__klass__.__namespace__[name]
+        except KeyError:
+            raise AttributeError, name
+        if type(value) is not types.FunctionType:
+            return value
+        return BoundMethod(value, self)
 
-typedef struct {
-	short LeafNode;
-	short KeyCount;
-	long Keys[ORDER - 1];
-	long Ptrs[ORDER];
-} NodeType;
+class BoundMethod:
+    def __init__(self, function, instance):
+        self.function = function
+        self.instance = instance
+    def __call__(self, *args):
+        print "calling", self.function, "for", self.instance, "with", args
+        return apply(self.function, (self.instance,) + args)
 
-typedef struct {
-	long RootBlock;
-	long AllocBlock;
-	char Junk[BLKSIZE - 2*sizeof(long)];
-} HeadType;
+Trace = Tracing('Trace', (), {})
 
-typedef struct {
-	long Pointers[BKTPTRS];
-	long NextBucket;
-} BucketType;
+class MyTracedClass(Trace):
+    def method1(self, a):
+        self.a = a
+    def method2(self):
+        return self.a
 
-typedef struct {
-	int Used;
-	int File;
-	char Name[NLEN];
-	int DupKeys;
-	long RootBlk;
-	long AllocBlk;
-	long CurBlk;
-	short CurKey;
-	short CurPtr;
-} IdxInfo;
-#define File(Idx)	(IdxTab[Idx].File)
-#define Root(Idx)	(IdxTab[Idx].RootBlk)
-#define Used(Idx)	(IdxTab[Idx].Used)
-#define Dups(Idx)	(IdxTab[Idx].DupKeys)
-#define Alloc(Idx)	(IdxTab[Idx].AllocBlk)
-#define CBlk(Idx)	(IdxTab[Idx].CurBlk)
-#define CKey(Idx)	(IdxTab[Idx].CurKey)
-#define CPtr(Idx)	(IdxTab[Idx].CurPtr)
+aninstance = MyTracedClass()
 
-BucketType Bucket;  
+aninstance.method1(10)
 
-static IdxInfo IdxTab[NIDX];
+print "the answer is %d" % aninstance.method2()
 
-static void ReadBlock(int File, long Block, int Size, void *Addr) {
-/*    
-printf("ReadBlock(File %d, Block %ld, Size %d, Addr %x)\n",
-File, Block, Size, Addr);
-*/  
+import datetime
 
-	if(lseek(File, Block * Size, SEEK_SET) == -1 ||
-	   read(File, Addr, Size) == -1)
-		printf("ReadBlock Error, File %d, Block %d, Size %d\n",
-			File, Block, Size);
-}
+def readField(record,colTypes,fieldNum):
+    # fieldNum is zero based
+    # record is a string containing the record
+    # colTypes is the types for each of the columns in the record
+    
+    offset = 0
+    for i in range(fieldNum):
+        colType = colTypes[i]
+        
+        if colType == "int":
+            offset+=10
+        elif colType[:4] == "char":
+            size = int(colType[4:])
+            offset += size
+        elif colType == "float":
+            offset+=20
+        elif colType == "datetime":
+            offset+=24
+            
+    colType = colTypes[fieldNum]
+   
+    if colType == "int":
+        value = record[offset:offset+10].strip()
+        if value == "null":
+            val = None
+        else:
+            val = int(value)
+    elif colType == "float":
+        value = record[offset:offset+20].strip()
+        if value == "null":
+            val = None
+        else:        
+            val = float(value)
+    elif colType[:4] == "char":
+        size = int(colType[4:])
+        value = record[offset:offset+size].strip()
+        if value == "null":
+            val = None
+        else:   
+            val = value[1:-1] # remove the ' and ' from each end of the string
+            if type(val) == bytes:
+                val = val.decode("utf-8")
+    elif colType == "datetime":
+        value = record[offset:offset+24].strip()
+        if value == "null":
+            val = None
+        else:
+            if type(val) == bytes:
+                val = val.decode("utf-8") 
+            val = datetime.datetime.strptime(val,'%m/%d/%Y %I:%M:%S %p')
+    else:
+        print("Unrecognized Type")
+        raise Exception("Unrecognized Type") 
+    
+    return val         
 
-static void WriteBlock(int File, long Block, int Size, void *Addr) {
-/* 
-printf("WriteBlock(File %d, Block %ld, Size %d, Addr %x)\n",
-File, Block, Size, Addr);
-*/ 
-	if(lseek(File, Block * Size, SEEK_SET) == -1 ||
-	   write(File, Addr, Size) == -1)
-		printf("WriteBlock Error, File %d, Block %d, Size %d\n",
-			File, Block, Size);
-}
+def main():
+    # SELECT Feed.FeedNum, Feed.Name, FeedAttribType.Name, FeedAttribute.Value WHERE
+    # Feed.FeedID = FeedAttribute.FeedID AND 
+    # FeedAttribute.FeedAttribTypeID = FeedAttribType.FeedAttribTypeID
+    
+    attribTypeCols = ["int","char20","char60","int","int","int","int"]
+    feedCols = ["int","int","int","char50","datetime","float","float","int","char50","int"]
+    feedAttributeCols = ["int","int","float"]
+    
+    before = datetime.datetime.now()
+    feedAttributeTable = open("FeedAttribute.tbl","r")
+    
+    for record in feedAttributeTable:
+        
+        feedID = readField(record,feedAttributeCols,0)
+        feedAttribTypeID = readField(record,feedAttributeCols,1)
+        value = readField(record,feedAttributeCols,2)
+        
+        feedTable = open("Feed.tbl","r")
+        
+        feedFeedID = -1
+        
+        while feedFeedID != feedID:
+            feedRecord = feedTable.readline()   
+            feedFeedID = readField(feedRecord,feedCols,0)
+            
+            
+        feedNum = readField(feedRecord,feedCols,2)
+        feedName = readField(feedRecord,feedCols,3)
+        
+        feedAttribTypeTable = open("FeedAttribType.tbl", "r")
+        
+        feedAttribTypeIDID = -1
+        
+        while feedAttribTypeIDID != feedAttribTypeID:
+            feedAttribTypeRecord = feedAttribTypeTable.readline()
+            feedAttribTypeIDID = readField(feedAttribTypeRecord,attribTypeCols,0)
+            
+        feedAttribTypeName = readField(feedAttribTypeRecord,attribTypeCols,1)
+        
+        print(feedNum,feedName,feedAttribTypeName,value)
+    after = datetime.datetime.now()
+    deltaT = after - before
+    milliseconds = deltaT.total_seconds() * 1000    
+    print("Done. The total time for the query without indexing was",milliseconds, \
+        "milliseconds.")
+    
+if __name__ == "__main__":
+    main()
 
-static void ReadHead(int Index) {
-	HeadType HeadBlock;
-	ReadBlock(File(Index), 0, BLKSIZE, &HeadBlock);
-	Root(Index) = HeadBlock.RootBlock;
-	Alloc(Index) = HeadBlock.AllocBlock;
-}
-
-static void WriteHead(int Index) {
-	HeadType HeadBlock;
-        int i;
-	HeadBlock.RootBlock = Root(Index);
-	HeadBlock.AllocBlock = Alloc(Index);
-	WriteBlock(File(Index), 0, BLKSIZE, &HeadBlock);
-}
-
-int OpenIndex(char *Name, int DupKeys) {
-	int i;
-	int j;
-	for(i = 0; i < NIDX; i++)
-		if(!Used(i)) break;
-	Used(i) = 1;
-	strcpy(IdxTab[i].Name, Name);
-	Dups(i) = DupKeys;
-	CBlk(i) = -1;
-	if((File(i) = open(Name, O_RDWR)) >= 0) {
-		ReadHead(i);
-	} else
-/*	if((File(i) = creat(Name, S_IREAD|S_IWRITE)) >= 0) {    */ 
-        if((File(i) = open(Name, O_RDWR|O_CREAT, 0644)) >= 0) { 
-		NodeType Node;
-		Root(i) = 1;
-		Alloc(i) = 2;
-		WriteHead(i);
-		Node.LeafNode = 1;
-		Node.KeyCount = 0;
-	        for(j = 0; j < ORDER-1; j++)
-                  { 
-                    Node.Ptrs[j] = -1; 
-                    Node.Keys[j] = 0; 
-                   }  
-		Node.Ptrs[ORDER - 1] = -1;
-		WriteBlock(File(i), 1, BLKSIZE, &Node);
-	} else {
-		perror("OpenIndex");
-		Used(i) = 0;
-		i = -1;
-	}
-	return i;
-}
-
-void CloseIndex(int Index) {
-	WriteHead(Index);
-	close(File(Index));
-	Used(Index) = 0;
-}
-
-static int FindKey(NodeType *Node, long Key) {
-	int k;
-	for(k = 0; k < Node->KeyCount; k++)
-		if(Node->Keys[k] > Key) break;
-	return k;
-}
-
-static void CheckBucket(int Index, NodeType *Node, long *Key, long *Ptr) {
-	*Ptr = -1;
-	if(CBlk(Index) >= 0) {
-		long NextPtr;
-	*Key = Node->Keys[CKey(Index)-1];
-	*Ptr = Node->Ptrs[CKey(Index)];
-	if(Dups(Index)) {
-/*		BucketType Bucket;   */ 
-		ReadBlock(File(Index), *Ptr, BLKSIZE, &Bucket);
-		*Ptr = Bucket.Pointers[CPtr(Index)];
-		CPtr(Index)++;
-		NextPtr = Bucket.Pointers[CPtr(Index)];
-	}
-	if(!Dups(Index) || NextPtr < 0) {
-		CPtr(Index) = 0;
-		CKey(Index)++;
-		if(CKey(Index) > Node->KeyCount) {
-			CBlk(Index) = Node->Ptrs[0];
-			CKey(Index) = 1;
-		}
-	}
-/*     
-printf("I%d K%ld P%ld\n", Index, *Key, *Ptr);
-*/  
-	}
-}
-
-long Lookup(int Index, long Key) {
-	NodeType Node;
-	long Ptr;
-	CBlk(Index) = Root(Index);
-	for(;;) {
-		ReadBlock(File(Index), CBlk(Index), BLKSIZE, &Node);
-		CKey(Index) = FindKey(&Node, Key);
-		if(Node.LeafNode) break;
-		CBlk(Index) = Node.Ptrs[CKey(Index)];
-	}
-	CPtr(Index) = 0;
-	if(CKey(Index) == 0) CBlk(Index) = -1;
-	CheckBucket(Index, &Node, &Key, &Ptr);
-	return Ptr;
-}
+import datetime
+import os
+from copy import deepcopy
+import sys
+import stack
+import queue
 
 
+class BTreeNode:
+    '''
+      This module provides the BTreeNode class.  This class will
+      be used by the BTree class.  Much of the functionality of
+      B-trees is provided by this class.
+    '''    
+    def __init__(self, degree = 1, numberOfKeys = 0, items = None, child = None, \
+        index = None):
+        ''' Create an empty node with the indicated degree'''
+        self.numberOfKeys = numberOfKeys
+        if items != None:
+            self.items = items
+        else:
+            self.items = [None]*2*degree
+        if child != None:
+            self.child = child
+        else:
+            self.child = [None]*(2*degree+1)
+        self.index = index
 
-static int InsertKey(int Index, NodeType *Node, int KIdx, long *Key, long *Ptr) {
-	long Keys[ORDER], Ptrs[ORDER+1];
-	int Count, Count1, Count2, k;
-	Count = Node->KeyCount + 1;
-	Count1 = Count < ORDER ? Count : ORDER/2;
-	Count2 = Count - Count1;
-	for(k = ORDER/2; k < KIdx; k++) {
-		Keys[k] = Node->Keys[k];
-		Ptrs[k+1] = Node->Ptrs[k+1];
-	}
-	Keys[KIdx] = *Key;
-	Ptrs[KIdx+1] = *Ptr;
-	for(k = KIdx; k < Node->KeyCount; k++) {
-		Keys[k+1] = Node->Keys[k];
-		Ptrs[k+2] = Node->Ptrs[k+1];
-	}
-	for(k = KIdx; k < Count1; k++) {
-		Node->Keys[k] = Keys[k];
-		Node->Ptrs[k+1] = Ptrs[k+1];
-	}
-	Node->KeyCount = Count1;
-	if(Count2) {
-		int s, d;
-		NodeType NNode;
-		NNode.LeafNode = Node->LeafNode;
-		Count2 -= !Node->LeafNode;
-		for(s = ORDER/2 + !Node->LeafNode, d = 0; d < Count2; s++, d++) {
-			NNode.Keys[d] = Keys[s];
-			NNode.Ptrs[d] = Ptrs[s];
-		}
-		NNode.Ptrs[d] = Ptrs[s];
-		NNode.KeyCount = Count2;
-		*Key = Keys[ORDER/2];
-		*Ptr = Alloc(Index)++;
-		if(Node->LeafNode) {  /* insert in sequential linked list */
-			NNode.Ptrs[0] = Node->Ptrs[0];
-			Node->Ptrs[0] = *Ptr;
-		}
-		WriteBlock(File(Index), *Ptr, BLKSIZE, &NNode);
-		WriteHead(Index);
-	}
-	return Count2;
-}
+    def __repr__(self):
+        return "BTreeNode("+str(len(self.items)//2)+","+str(self.numberOfKeys)+ \
+            ","+repr(self.items)+","+repr(self.child)+","+str(self.index)+")\n"
 
-static long NewBucket(int Index, long Ptr, long Next) {
-	long BBlk;
-        int j; 
-	BucketType Bucket;
-	Bucket.Pointers[0] = Ptr;
-        Bucket.Pointers[1] = -1;  
-	Bucket.NextBucket = Next;
-	BBlk = Alloc(Index)++;
-	WriteBlock(File(Index), BBlk, BLKSIZE, &Bucket);
-	WriteHead(Index);
-	return BBlk;
-}
+    def __str__(self):
+        st = 'The contents of the node with index '+ \
+             str(self.index) + ':\n'
+        for i in range(0, self.numberOfKeys):
+            st += '   Index   ' + str(i) + '  >  child: '
+            st += str(self.child[i])
+            st += '   item: '
+            st += str(self.items[i]) + '\n'
+        st += '                 child: '
+        st += str(self.child[self.numberOfKeys]) + '\n'
+        return st
 
-static int Error;
+    def addItemAndSplit(self, anItem, left, right):
+        ''' 
+         If the receiver is not full, generate an error.
+         If full, split the receiver into two nodes, the
+         smallest degree + 1 keys staying in the original node.
+         The largest degree keys go into a new node which is
+         returned. Note that the last child of the receiver
+         and the first child of the new node will be the same.
+        '''
+        pass
 
-static int RecInsert(int Index, long Block, long *Key, long *Ptr) {
-	NodeType Node;
-	int KIdx, Split = 0;
-	int EqualKey;
-	ReadBlock(File(Index), Block, BLKSIZE, &Node);
-	KIdx = FindKey(&Node, *Key);
-	EqualKey = KIdx && Node.Keys[KIdx-1] == *Key;
-	if(!Node.LeafNode)
-		Split = RecInsert(Index, Node.Ptrs[KIdx], Key, Ptr);
-	if(Split || Node.LeafNode && !EqualKey) {
-		if(Node.LeafNode && Dups(Index))
-			*Ptr = NewBucket(Index, *Ptr, -1);
-		Split = InsertKey(Index, &Node, KIdx, Key, Ptr);
-		WriteBlock(File(Index), Block, BLKSIZE, &Node);
-	} else if(Node.LeafNode && Dups(Index)) { /* put in existing bucket */
-		BucketType Bucket;
-		int i;
-		ReadBlock(File(Index), Node.Ptrs[KIdx], BLKSIZE, &Bucket);
-		for(i = 0; i < BKTPTRS && Bucket.Pointers[i] >= 0; i++);
-		if(i < BKTPTRS) {
-		    Bucket.Pointers[i] = *Ptr;
-		    if(i < BKTPTRS-1) Bucket.Pointers[i+1] = -1;
-		    WriteBlock(File(Index), Node.Ptrs[KIdx], BLKSIZE, &Bucket);
-		} else {
-			printf("ERROR: Bucket Overflow\n");
-		}
-	} else if(Node.LeafNode) {
-		Error = -1;
-	}
-	return Split;
-}
+    def getChild(self,i):
+        # Answer the index of the ith child
+        if (0 <= i <= self.numberOfKeys):
+            return self.child[i]
+        else:
+            print( 'Error in getChild().' )
+            
+    def setChild(self, i, childIndex):
+        # Set the ith child of the node to childIndex
+        self.child[i] = childIndex
 
-int Insert(int Index, long Key, long Ptr) {
-	int Split;
-	Error = 0;
-	Split = RecInsert(Index, Root(Index), &Key, &Ptr);
-	if(Split) {
-		NodeType Node;
-		Node.LeafNode = 0;
-		Node.KeyCount = 1;
-		Node.Keys[0] = Key;
-		Node.Ptrs[1] = Ptr;
-		Node.Ptrs[0] = Root(Index);
-		Root(Index) = Alloc(Index)++;
-		WriteBlock(File(Index), Root(Index), BLKSIZE, &Node);
-		WriteHead(Index);
-	}
-	CBlk(Index) = -1;
-	return Error;
-}
+    def childIndexOf(self, anIndex):
+        # Answer the index of the child in the receiver
+        # which contains anIndex.
+        index = -1
+        k = 0
+        found = False
+        while not found and k <= self.numberOfKeys :
+            if self.child[k] == anIndex:
+                index = k
+                found = True
+            else:
+                k += 1
+        if index < 0:
+            print( 'Error in childIndexOf' )
+            return -1
+        else:
+            return index
 
-main()  {
-
-/********************************************************************/
-/* The main section of code should be replaced.                     */ 
-/* It just illustrates how keys and addresses can be inserted       */   
-/* into a B+ tree and then retrieved                                */   
-/********************************************************************/
-
- char Xname[8];
-  int  Xdupkeys; 
-  int  XEntryNum; 
-  long XKey, XPtr;    
-  int  RetnCode;     
-  int  i,j;     
-
-  int NumInsert, NumLookup;  
-
-  printf("start main\n");  
-
-  Xdupkeys  = 0;  
-  Xname[0]  = 'm'; 
-  Xname[1]  = 'y'; 
-  Xname[2]  = 'f'; 
-  Xname[3]  = 'i'; 
-  Xname[4]  = 'l'; 
-  Xname[5]  = 'e'; 
+    def clear(self):
+        self.numberOfKeys = 0
+        self.items = [None]*len(self.items)
+        self.child = [None]*len(self.child)
+    
+    def copyItemsAndChildren(self, fromNode, start,
+                             finish, index):
+        '''The receiver gets the contents of the fromNode from
+          index start to finish, along with the next child.
+          The copying within the receiver begins at position
+          index. Answer the receiver.
+        '''
+        pass
   
+    def copyWithRight(self, aNode, parentNode):  
+        '''Answer a node which contains all the items and children
+          of the receiver, followed by the parent item followed by
+          all the items and children of aNode.  The receiver and
+          aNode are left and right siblings wrt the parentNode.
+        '''
+        pass
+    
+    def insertItem(self, anItem, left, right):  
+        ''' We assume that the receiver is not full. anItem is
+          inserted into the BTreeNode with child indices left and
+          right.  This is done while retaining the <= ordering on
+          the key of the item.  If the insertion is successful,
+          answer True.  If not, answer False.
+        '''
+        pass
 
-/********************************************************************/  
-/* read number of keys to insert, the number of keys  to search for */ 
-/* and whether duplicates are allowed in the index                  */ 
-/********************************************************************/  
+    def isFull(self):
+        ''' Answer True if the receiver is full.  If not, return
+          False.
+        '''
+        return (self.numberOfKeys == len(self.items))
 
-  scanf("%d  %d  %d",&NumInsert, &NumLookup, &Xdupkeys);
+    def removeChild(self, index):
+        ''' If the index is valid, remove and answer the child at
+          location index.  If not, answer None.  In any event,
+          do NOT update the key count.  We copy all the rest of
+          the child entries down one, as removeItem will
+          decrement numberOfKeys.
+        '''
+        pass
 
-  XEntryNum = OpenIndex(Xname, Xdupkeys);  
+    def removeItem(self, index):
+        '''If index is valid, remove and answer the item at
+          location index. Update the key count.  If not, answer
+          None.
+        '''
+        pass
 
-  for(i = 0; i < NumInsert; i++){  
-		printf("Insert KEY, PTR:");
-/* read key and address  to insert into the B+ tree  */ 
+    def searchNode(self, anItem):
+        '''Answer a dictionary satisfying: at 'found'
+          either True or False depending upon whether the receiver
+          has a matching item;  at 'nodeIndex', either the index of
+          the matching item, or in the case of an unsuccessful
+          search, the index of the smallest (first) item such that
+          anItem < item, or self.numberOfKeys if all items
+          are < anItem.  In other words, nodeIndex is the place in the node
+          where the object is, or should go if there is room in the node.
+        '''
+        pass       
 
-       scanf("%d  %d",&XKey, &XPtr);
-       printf("%d  %d",XKey, XPtr);
-       printf("\n");
+    def setIndex(self, anInteger):
+        self.index = anInteger
 
-       RetnCode = Insert(XEntryNum, XKey, XPtr);        
-       if (RetnCode != 0)  
-          printf("Error During Key Insertion\n");         
-     }  
+    def setNumberOfKeys(self, anInt ):
+        self.numberOfKeys = anInt
+
+class BTree:
+    def __init__(self, degree, nodes = {}, rootIndex = 1, freeIndex = 2):
+        # This method is complete
+        self.degree = degree
+        
+        if len(nodes) == 0:
+            self.rootNode = BTreeNode(degree)
+            self.nodes = {}
+            self.rootNode.setIndex(rootIndex)
+            self.writeAt(1, self.rootNode)  
+        else:
+            self.nodes = deepcopy(nodes)
+            self.rootNode = self.nodes[rootIndex]   
+            
+        self.stackOfNodes = stack.Stack()   
+        self.rootIndex = rootIndex
+        self.freeIndex = freeIndex
+        
+    def __repr__(self):
+        # This method is complete
+        return "BTree("+str(self.degree)+",\n "+repr(self.nodes)+","+ \
+            str(self.rootIndex)+","+str(self.freeIndex)+")"
+
+    def __str__(self):
+        # This method is complete 
+        st = '  The degree of the BTree is ' + str(self.degree)+\
+             '.\n'
+        st += '  The index of the root node is ' + \
+              str(self.rootIndex) + '.\n'
+        for x in range(1, self.freeIndex):
+            node = self.readFrom(x)
+            if node.getNumberOfKeys() > 0:
+                st += str(node) 
+        return st
+
+          
+    def delete(self, anItem):
+        ''' Answer None if a matching item is not found.  If found,
+          answer the entire item.  
+        '''
+        pass
+
+    def getFreeIndex(self):
+        # Answer a new index and update freeIndex.  Private
+        self.freeIndex += 1
+        return self.freeIndex - 1
+
+    def getFreeNode(self):
+        #Answer a new BTreeNode with its index set correctly.
+        #Also, update freeIndex.  Private
+        newNode = BTreeNode(self.degree)
+        index = self.getFreeIndex()
+        newNode.setIndex(index)
+        self.writeAt(index,newNode)
+        return newNode
+
+    def inorderOn(self, aFile):
+        '''
+          Print the items of the BTree in inorder on the file 
+          aFile.  aFile is open for writing.
+          This method is complete at this time. 
+        '''
+        aFile.write("An inorder traversal of the BTree:\n")
+        self.inorderOnFrom( aFile, self.rootIndex)
+
+    def inorderOnFrom(self, aFile, index):
+        ''' Print the items of the subtree of the BTree, which is
+          rooted at index, in inorder on aFile.
+        '''
+        pass
+
+    def insert(self, anItem):
+        ''' Answer None if the BTree already contains a matching
+          item. If not, insert a deep copy of anItem and answer
+          anItem.
+        '''
+        pass
+
+    def levelByLevel(self, aFile):
+        ''' Print the nodes of the BTree level-by-level on aFile. )
+        '''
+        pass
+
+    def readFrom(self, index):
+        ''' Answer the node at entry index of the btree structure.
+          Later adapt to files
+        '''
+        if self.nodes.__contains__(index):
+            return self.nodes[index]
+        else:
+            return None
+
+    def recycle(self, aNode):
+        # For now, do nothing
+        aNode.clear()
+
+    def retrieve(self, anItem):
+        ''' If found, answer a deep copy of the matching item.
+          If not found, answer None
+        '''
+        pass  
+
+    def __searchTree(self, anItem):
+        ''' Answer a dictionary.  If there is a matching item, at
+          'found' is True, at 'fileIndex' is the index of the node
+          in the BTree with the matching item, and at 'nodeIndex'
+          is the index into the node of the matching item.  If not,
+          at 'found' is False, but the entry for 'fileIndex' is the
+          leaf node where the search terminated.  An important
+          function of this method is that it pushes all of the
+          nodes of the search path from the rootnode, down to,
+          but not including the corresponding leaf node of a search
+          (or the node containing a match).  Again, the rootnode
+          is pushed if it is not a leaf node and has no match.
+        '''
+        pass
+
+    def update(self, anItem):
+        ''' If found, update the item with a matching key to be a
+          deep copy of anItem and answer anItem.  If not, answer None.
+        '''
+        pass
+
+    def writeAt(self, index, aNode):
+        ''' Set the element in the btree with the given index
+          to aNode.  This method must be invoked to make any
+          permanent changes to the btree.  We may later change
+          this method to work with files.
+          This method is complete at this time.
+        '''
+        self.nodes[index] = aNode
+
+def btreemain():
+    print("My/Our name(s) is/are ")
+
+    lst = [10,8,22,14,12,18,2,50,15]
+    
+    b = BTree(2)
+    
+    for x in lst:
+        print(repr(b))
+        print("***Inserting",x)
+        b.insert(x)
+    
+    print(repr(b))
+    
+    lst = [14,50,8,12,18,2,10,22,15]
+    
+    for x in lst:
+        print("***Deleting",x)
+        b.delete(x) 
+        print(repr(b))
+    
+    #return 
+    lst = [54,76]
+    
+    for x in lst:
+        print("***Deleting",x)
+        b.delete(x)
+        print(repr(b))
+        
+    print("***Inserting 14")    
+    b.insert(14)
+    
+    print(repr(b))
+    
+    print("***Deleting 2")
+    b.delete(2)
+    
+    print(repr(b))
+    
+    print ("***Deleting 84")
+    b.delete(84)
+    
+    print(repr(b))
+
+    return
+
+'''
+Here is the expected output from running this program. Depending on the order
+of redistributing or coalescing, your output may vary. However, the end result
+in every case should be the insertion or deletion of the item from the BTree. 
+
+My/Our name(s) is/are 
+BTree(2,
+ {1: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],1)
+},1,2)
+***Inserting 10
+BTree(2,
+ {1: BTreeNode(2,1,[10, None, None, None],[None, None, None, None, None],1)
+},1,2)
+***Inserting 8
+BTree(2,
+ {1: BTreeNode(2,2,[8, 10, None, None],[None, None, None, None, None],1)
+},1,2)
+***Inserting 22
+BTree(2,
+ {1: BTreeNode(2,3,[8, 10, 22, None],[None, None, None, None, None],1)
+},1,2)
+***Inserting 14
+BTree(2,
+ {1: BTreeNode(2,4,[8, 10, 14, 22],[None, None, None, None, None],1)
+},1,2)
+***Inserting 12
+BTree(2,
+ {1: BTreeNode(2,2,[8, 10, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,2,[14, 22, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+},3,4)
+***Inserting 18
+BTree(2,
+ {1: BTreeNode(2,2,[8, 10, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,3,[14, 18, 22, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+},3,4)
+***Inserting 2
+BTree(2,
+ {1: BTreeNode(2,3,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,3,[14, 18, 22, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+},3,4)
+***Inserting 50
+BTree(2,
+ {1: BTreeNode(2,3,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,4,[14, 18, 22, 50],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+},3,4)
+***Inserting 15
+BTree(2,
+ {1: BTreeNode(2,3,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,2,[14, 15, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,2,[12, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,2,[22, 50, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 14
+BTree(2,
+ {1: BTreeNode(2,3,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,4,[15, 18, 22, 50],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 50
+BTree(2,
+ {1: BTreeNode(2,3,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,3,[15, 18, 22, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 8
+BTree(2,
+ {1: BTreeNode(2,2,[2, 10, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,3,[15, 18, 22, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 12
+BTree(2,
+ {1: BTreeNode(2,2,[2, 10, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,2,[18, 22, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[15, None, None, None],[1, 2, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 18
+BTree(2,
+ {1: BTreeNode(2,4,[2, 10, 15, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 2
+BTree(2,
+ {1: BTreeNode(2,3,[10, 15, 22, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 10
+BTree(2,
+ {1: BTreeNode(2,2,[15, 22, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 22
+BTree(2,
+ {1: BTreeNode(2,1,[15, None, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 15
+BTree(2,
+ {1: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 54
+BTree(2,
+ {1: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 76
+BTree(2,
+ {1: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+***Inserting 14
+BTree(2,
+ {1: BTreeNode(2,1,[14, None, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 2
+BTree(2,
+ {1: BTreeNode(2,1,[14, None, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 84
+BTree(2,
+ {1: BTreeNode(2,1,[14, None, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],3)
+, 4: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],4)
+},1,5)
+'''
+
+def readRecord(file,recNum,recSize):
+    file.seek(recNum*recSize)
+    record = file.read(recSize)
+    return record
+
+def readField(record,colTypes,fieldNum):
+    # fieldNum is zero based
+    # record is a string containing the record
+    # colTypes is the types for each of the columns in the record
+    
+    offset = 0
+    for i in range(fieldNum):
+        colType = colTypes[i]
+        
+        if colType == "int":
+            offset+=10
+        elif colType[:4] == "char":
+            size = int(colType[4:])
+            offset += size
+        elif colType == "float":
+            offset+=20
+        elif colType == "datetime":
+            offset+=24
+            
+    colType = colTypes[fieldNum]
+   
+    if colType == "int":
+        value = record[offset:offset+10].strip()
+        if value == "null":
+            val = None
+        else:
+            val = int(value)
+    elif colType == "float":
+        value = record[offset:offset+20].strip()
+        if value == "null":
+            val = None
+        else:        
+            val = float(value)
+    elif colType[:4] == "char":
+        size = int(colType[4:])
+        value = record[offset:offset+size].strip()
+        if value == "null":
+            val = None
+        else:        
+            val = value[1:-1] # remove the ' and ' from each end of the string
+            if type(val) == bytes:
+                val = val.decode("utf-8")            
+    elif colType == "datetime":
+        value = record[offset:offset+24].strip()
+        if value == "null":
+            val = None
+        else:        
+            if type(val) == bytes:
+                val = val.decode("utf-8") 
+            val = datetime.datetime.strptime(val,'%m/%d/%Y %I:%M:%S %p')
+    else:
+        print("Unrecognized Type")
+        raise Exception("Unrecognized Type") 
+    
+    return val
+
+class Item:
+    def __init__(self,key,value):
+        self.key = key
+        self.value = value
+    
+    def __repr__(self):
+        return "Item("+repr(self.key)+","+repr(self.value)+")"
+        
+    def __eq__(self,other):
+        if type(self) != type(other):
+            return False
+        
+        return self.key == other.key
+    
+    def __lt__(self,other):
+        return self.key < other.key
+    
+    def __gt__(self,other):
+        return self.key > other.key
+    
+    def __ge__(self,other):
+        return self.key >= other.key
+    
+    def getValue(self):
+        return self.value
+    
+    def getKey(self):
+        return self.key   
+
+def main():
+    # Select Feed.FeedNum, Feed.Name, FeedAttribType.Name, FeedAttribute.Value where
+    # Feed.FeedID = FeedAttribute.FeedID and FeedAttribute.FeedAtribTypeID = FeedAttribType.ID
+    attribTypeCols = ["int","char20","char60","int","int","int","int"]
+    feedCols = ["int","int","int","char50","datetime","float","float","int","char50","int"]
+    feedAttributeCols = ["int","int","float"]
+    
+    feedAttributeTable = open("FeedAttribute.tbl","r")
+    
+    if os.path.isfile("Feed.idx"):
+        indexFile = open("Feed.idx","r")
+        feedTableRecLength = int(indexFile.readline())
+        feedIndex = eval("".join(indexFile.readlines()))
+    else:
+        feedIndex = BTree(3)
+        feedTable = open("Feed.tbl","r")
+        offset = 0
+        for record in feedTable:
+            feedID = readField(record,feedCols,0)
+            anItem = Item(feedID,offset)
+            feedIndex.insert(anItem)            
+            offset+=1
+            feedTableRecLength = len(record)
+         
+        print("Feed Table Index Created")  
+        indexFile = open("Feed.idx","w")
+        indexFile.write(str(feedTableRecLength)+"\n")
+        indexFile.write(repr(feedIndex)+"\n")
+        indexFile.close()
+        
+    if os.path.isfile("FeedAttribType.idx"):
+        indexFile = open("FeedAttribType.idx","r")
+        attribTypeTableRecLength = int(indexFile.readline())
+        attribTypeIndex = eval("".join(indexFile.readlines()))
+    else:
+        attribTypeIndex = BTree(3)
+        attribTable = open("FeedAttribType.tbl","r")
+        offset = 0
+        for record in attribTable:
+            feedAttribTypeID = readField(record,attribTypeCols,0)
+            anItem = Item(feedAttribTypeID,offset)
+            attribTypeIndex.insert(anItem)
+            offset+=1
+            attribTypeTableRecLength = len(record)
+         
+        print("Attrib Type Table Index Created")
+        indexFile = open("FeedAttribType.idx","w")
+        indexFile.write(str(attribTypeTableRecLength)+"\n")
+        indexFile.write(repr(attribTypeIndex)+"\n")
+        indexFile.close()
+    
+    feedTable = open("Feed.tbl","rb")
+    feedAttribTypeTable = open("FeedAttribType.tbl", "rb")
+    before = datetime.datetime.now()
+    for record in feedAttributeTable:
+        
+        feedID = readField(record,feedAttributeCols,0)
+        feedAttribTypeID = readField(record,feedAttributeCols,1)
+        value = readField(record,feedAttributeCols,2)
+          
+        lookupItem = Item(feedID,None)
+        item = feedIndex.retrieve(lookupItem)
+        offset = item.getValue()
+        feedRecord = readRecord(feedTable,offset,feedTableRecLength)   
+        feedNum = readField(feedRecord,feedCols,2)
+        feedName = readField(feedRecord,feedCols,3)
+        
+        lookupItem = Item(feedAttribTypeID,None)
+        item = attribTypeIndex.retrieve(lookupItem)
+        offset = item.getValue()
+        feedAttribTypeRecord = readRecord(feedAttribTypeTable,offset,attribTypeTableRecLength)
+        feedAttribTypeName = readField(feedAttribTypeRecord,attribTypeCols,1)
+        
+        print(feedNum,feedName,feedAttribTypeName,value)
+    after = datetime.datetime.now()
+    deltaT = after - before
+    milliseconds = deltaT.total_seconds() * 1000    
+    print("Done. The total time for the query without indexing was",milliseconds, \
+      "milliseconds.")
+    
+if __name__ == "__main__":
+    btreemain()
+
+mport datetime
+import os
+from copy import deepcopy
+import sys
+import queue
+
+class BTreeNode:
+    '''
+      This class will be used by the BTree class.  Much of the functionality of
+      BTrees is provided by this class.
+    '''
+    def __init__(self, degree = 1, numberOfKeys = 0, items = None, child = None, \
+        index = None):
+        ''' Create an empty node with the indicated degree'''
+        self.numberOfKeys = numberOfKeys
+        if items != None:
+            self.items = items
+        else:
+            self.items = [None]*2*degree
+        if child != None:
+            self.child = child
+        else:
+            self.child = [None]*(2*degree+1)
+        self.index = index
+
+    def __repr__(self):
+        ''' This provides a way of writing a BTreeNode that can be
+            evaluated to reconstruct the node.
+        '''
+        return "BTreeNode("+str(len(self.items)//2)+","+str(self.numberOfKeys)+ \
+            ","+repr(self.items)+","+repr(self.child)+","+str(self.index)+")\n"
+
+    def __str__(self):
+        st = 'The contents of the node with index '+ \
+             str(self.index) + ':\n'
+        for i in range(0, self.numberOfKeys):
+            st += '   Index   ' + str(i) + '  >  child: '
+            st += str(self.child[i])
+            st += '   item: '
+            st += str(self.items[i]) + '\n'
+        st += '                 child: '
+        st += str(self.child[self.numberOfKeys]) + '\n'
+        return st
+    
+    def insert(self,bTree,item):
+        '''
+        Insert an item in the node. Return three values as a tuple, 
+        (left,item,right). If the item fits in the current node, then 
+        return self as left and None for item and right. Otherwise, return 
+        two new nodes and the item that will separate the two nodes in the parent. 
+        '''
+        pass
+
+    def splitNode(self,bTree,item,right):
+        '''
+        This method is given the item to insert into this node and the node 
+        that is to be to the right of the new item once this node is split.
+        
+        Return the indices of the two nodes and a key with the item added to 
+        one of the new nodes. The item is inserted into one of these two 
+        nodes and not inserted into its children.
+        '''
+        pass
+    
+    def getLeftMost(self,bTree):
+        ''' Return the left-most item in the 
+            subtree rooted at self.
+        '''
+        if self.child[0] == None:
+            return self.items[0]
+        
+        return bTree.nodes[self.child[0]].getLeftMost(bTree)
+
+    def delete(self,bTree,item):
+        '''
+           The delete method returns None if the item is not found
+           and a deep copy of the item in the tree if it is found.
+           As a side-effect, the tree is updated to delete the item.
+        '''
+        pass
+        
+    def redistributeOrCoalesce(self,bTree,childIndex):
+        '''
+          This method is given a node and a childIndex within 
+          that node that may need redistribution or coalescing.
+          The child needs redistribution or coalescing if the
+          number of keys in the child has fallen below the 
+          degree of the BTree. If so, then redistribution may
+          be possible if the child is a leaf and a sibling has 
+          extra items. If redistribution does not work, then 
+          the child must be coalesced with either the left 
+          or right sibling.
+
+          This method does not return anything, but has the 
+          side-effect of redistributing or coalescing
+          the child node with a sibling if needed. 
+        '''
+        pass 
 
 
- for(i = 0; i < NumLookup; i++)
-     {  
+    def getChild(self,i):
+        # Answer the index of the ith child
+        if (0 <= i <= self.numberOfKeys):
+            return self.child[i]
+        else:
+            print( 'Error in getChild().' )
+            
+    def setChild(self, i, childIndex):
+        # Set the ith child of the node to childIndex
+        self.child[i] = childIndex 
 
-/* read key to lookup in the B+ tree  */ 
-		printf("Search KEY:");
-       scanf("%d",&XKey);
-       printf("%d",XKey);
-       printf("\n");
-       XPtr = Lookup(XEntryNum, XKey);   
-       if (Xdupkeys == 0)  {  
-         printf("Key value is %d and Ptr value is %d\n", XKey, XPtr);    
-        } 
-       else 
-         printf("Key value is %d\n", XKey);  
+    def getIndex(self):
+        return self.index
 
-       if (Xdupkeys == 1) { 
-         j = 0;  
-         while (Bucket.Pointers[j] != -1)  { 
-            printf("Ptr value is %d\n", Bucket.Pointers[j]); 
-            j++; 
-           } 
-       }    
-     }  
+    def setIndex(self, anInteger):
+        self.index = anInteger
+
+    def isFull(self):
+        ''' Answer True if the receiver is full.  If not, return
+          False.
+        '''
+        return (self.numberOfKeys == len(self.items))
+
+    def getNumberOfKeys(self):
+        return self.numberOfKeys
+
+    def setNumberOfKeys(self, anInt ):
+        self.numberOfKeys = anInt
+
+    def clear(self):
+        self.numberOfKeys = 0
+        self.items = [None]*len(self.items)
+        self.child = [None]*len(self.child)
+
+    def search(self, bTree, item):
+        '''Answer a dictionary satisfying: at 'found'
+          either True or False depending upon whether the receiver
+          has a matching item;  at 'nodeIndex' the index of
+          the matching item within the node; at 'fileIndex' the 
+          node's index. nodeIndex and fileIndex are only set if the 
+          item is found in the current node. 
+        '''
+        pass
 
 
-  CloseIndex(XEntryNum);
+class BTree:
+    def __init__(self, degree, nodes = {}, rootIndex = 1, freeIndex = 2):
+        self.degree = degree
+        
+        if len(nodes) == 0:
+            self.rootNode = BTreeNode(degree)
+            self.nodes = {}
+            self.rootNode.setIndex(rootIndex)
+            self.writeAt(1, self.rootNode)  
+        else:
+            self.nodes = deepcopy(nodes)
+            self.rootNode = self.nodes[rootIndex]
+              
+        self.rootIndex = rootIndex
+        self.freeIndex = freeIndex
+        
+    def __repr__(self):
+        return "BTree("+str(self.degree)+",\n "+repr(self.nodes)+","+ \
+            str(self.rootIndex)+","+str(self.freeIndex)+")"
 
-  printf("finish main\n");  
+    def __str__(self):
+        st = '  The degree of the BTree is ' + str(self.degree)+\
+             '.\n'
+        st += '  The index of the root node is ' + \
+              str(self.rootIndex) + '.\n'
+        for x in range(1, self.freeIndex):
+            node = self.readFrom(x)
+            if node.getNumberOfKeys() > 0:
+                st += str(node) 
+        return st
 
 
-}
+    def delete(self, anItem):
+        ''' Answer None if a matching item is not found.  If found,
+          answer the entire item.
+        ''' 
+        pass
 
-/* Copyright (C) 2006 David Garcia
- * You may use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of this software subject to the following conditions:
- * THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
- * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
- * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+    def getFreeIndex(self):
+        # Answer a new index and update freeIndex.  Private
+        self.freeIndex += 1
+        return self.freeIndex - 1
 
-#if !defined BPLUSTREE_HPP_227824
-#define BPLUSTREE_HPP_227824
+    def getFreeNode(self):
+        #Answer a new BTreeNode with its index set correctly.
+        #Also, update freeIndex.  Private
+        newNode = BTreeNode(self.degree)
+        index = self.getFreeIndex()
+        newNode.setIndex(index)
+        self.writeAt(index,newNode)
+        return newNode
 
-// This is required for glibc to define std::posix_memalign
-#if !defined(_XOPEN_SOURCE) || (_XOPEN_SOURCE < 600)
-#define _XOPEN_SOURCE 600
-#endif
-#include <stdlib.h>
+    def inorderOn(self, aFile):
+        '''
+          Print the items of the BTree in inorder on the file 
+          aFile.  aFile is open for writing.
+        '''
+        aFile.write("An inorder traversal of the BTree:\n")
+        self.inorderOnFrom( aFile, self.rootIndex)
 
-#include <assert.h>
-#include <boost/static_assert.hpp>
-#include <boost/pool/object_pool.hpp>
+    def inorderOnFrom(self, aFile, index):
+        ''' Print the items of the subtree of the BTree, which is
+          rooted at index, in inorder on aFile.
+        '''
+        pass
 
-// DEBUG
-#include <iostream>
-using std::cout;
-using std::endl;
+    def insert(self, anItem):
+        ''' Answer None if the BTree already contains a matching
+          item. If not, insert a deep copy of anItem and answer
+          anItem.
+        '''
+        pass
 
-#if defined DEBUG_ASSERT
-#    warning "DEBUG_ASSERT overloaded"
-#else
-#    if defined DEBUG
-#        define DEBUG_ASSERT(expr) assert(expr)
-#    else
-#        define DEBUG_ASSERT(expr)
-#    endif
-#endif
+    def levelByLevel(self, aFile):
+        ''' Print the nodes of the BTree level-by-level on aFile. )
+        '''
+        pass
 
-template <typename KEY, typename VALUE, unsigned N, unsigned M,
-	unsigned INNER_NODE_PADDING= 0, unsigned LEAF_NODE_PADDING= 0,
-	unsigned NODE_ALIGNMENT= 64>
-class BPlusTree
-{
-public:
-	// N must be greater than two to make the split of
-	// two inner nodes sensible.
-	BOOST_STATIC_ASSERT(N>2);
-	// Leaf nodes must be able to hold at least one element
-	BOOST_STATIC_ASSERT(M>0);
+    def readFrom(self, index):
+        ''' Answer the node at entry index of the btree structure.
+          Later adapt to files
+        '''
+        if self.nodes.__contains__(index):
+            return self.nodes[index]
+        else:
+            return None
 
-	// Builds a new empty tree.
-	BPlusTree()
-	: depth(0),
-	  root(new_leaf_node())
-	{
-		// DEBUG
-		// cout << "sizeof(LeafNode)==" << sizeof(LeafNode) << endl;
-		// cout << "sizeof(InnerNode)==" << sizeof(InnerNode) << endl;
-	}
+    def recycle(self, aNode):
+        # For now, do nothing
+        aNode.clear()
 
-	~BPlusTree() {
-		// Empty. Memory deallocation is done automatically
-		// when innerPool and leafPool are destroyed.
-	}
+    def retrieve(self, anItem):
+        ''' If found, answer a deep copy of the matching item.
+          If not found, answer None
+        '''
+        pass
 
-	// Inserts a pair (key, value). If there is a previous pair with
-	// the same key, the old value is overwritten with the new one.
-	void insert(KEY key, VALUE value) {
-		InsertionResult result;
-		bool was_split;
-		if( depth == 0 ) {
-			// The root is a leaf node
-			DEBUG_ASSERT( *reinterpret_cast<NodeType*>(root) == 
-				NODE_LEAF);
-			was_split= leaf_insert(reinterpret_cast<LeafNode*>
-				(root), key, value, &result);
-		} else {
-			// The root is an inner node
-			DEBUG_ASSERT( *reinterpret_cast<NodeType*>
-				(root) == NODE_INNER );
-			was_split= inner_insert(reinterpret_cast<InnerNode*>
-				(root), depth, key, value, &result);
-		}
-		if( was_split ) {
-			// The old root was splitted in two parts.
-			// We have to create a new root pointing to them
-			depth++;
-			root= new_inner_node();
-			InnerNode* rootProxy=
-				reinterpret_cast<InnerNode*>(root);
-			rootProxy->num_keys= 1;
-			rootProxy->keys[0]= result.key;
-			rootProxy->children[0]= result.left;
-			rootProxy->children[1]= result.right;
-		}
-	}
+    def __searchTree(self, anItem):
+        ''' Answer a dictionary.  If there is a matching item, at
+          'found' is True, at 'fileIndex' is the index of the node
+          in the BTree with the matching item, and at 'nodeIndex'
+          is the index into the node of the matching item.  If not,
+          at 'found' is False, but the entry for 'fileIndex' is the
+          leaf node where the search terminated.
+        '''
+        pass
 
-	// Looks for the given key. If it is not found, it returns false,
-	// if it is found, it returns true and copies the associated value
-	// unless the pointer is null.
-	bool find(const KEY& key, VALUE* value= 0) const {
-		InnerNode* inner;
-		register void* node= root;
-		register unsigned d= depth, index;
-		while( d-- != 0 ) {
-			inner= reinterpret_cast<InnerNode*>(node);
-			DEBUG_ASSERT( inner->type == NODE_INNER );
-			index= inner_position_for(key, inner->keys,
-				inner->num_keys);
-			node= inner->children[index];
-		}
-		LeafNode* leaf= reinterpret_cast<LeafNode*>(node);
-		DEBUG_ASSERT( leaf->type == NODE_LEAF );
-		index= leaf_position_for(key, leaf->keys, leaf->num_keys);
-		if( leaf->keys[index] == key ) {
-			if( value != 0 ) {
-				*value= leaf->values[index];
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
+ 
+    def update(self, anItem):
+        ''' If found, update the item with a matching key to be a
+          deep copy of anItem and answer anItem.  If not, answer None.
+        '''
+        pass
 
-	// Returns the size of an inner node
-	// It is useful when optimizing performance with cache alignment.
-	unsigned sizeof_inner_node() const {
-		return sizeof(InnerNode);
-	}
+    def writeAt(self, index, aNode):
+        ''' Set the element in the btree with the given index
+          to aNode.  This method must be invoked to make any
+          permanent changes to the btree.  We may later change
+          this method to work with files.
+          This method is complete at this time.
+        '''
+        self.nodes[index] = aNode
 
-	// Returns the size of a leaf node.
-	// It is useful when optimizing performance with cache alignment.
-	unsigned sizeof_leaf_node() const {
-		return sizeof(LeafNode);
-	}
-	
+def btreemain():
+    print("My/Our name(s) is/are ")
 
-private:
-	// Used when debugging
-	enum NodeType {NODE_INNER=0xDEADBEEF, NODE_LEAF=0xC0FFEE};
+    lst = [10,8,22,14,12,18,2,50,15]
+    
+    b = BTree(2)
+    
+    for x in lst:
+        print(repr(b))
+        print("***Inserting",x)
+        b.insert(x)
+    
+    print(repr(b))
+    
+    lst = [14,50,8,12,18,2,10,22,15]
+    
+    for x in lst:
+        print("***Deleting",x)
+        b.delete(x) 
+        print(repr(b))
+    
+    #return 
+    lst = [54,76]
+    
+    for x in lst:
+        print("***Deleting",x)
+        b.delete(x)
+        print(repr(b))
+        
+    print("***Inserting 14")
+    b.insert(14)
+    
+    print(repr(b))
+    
+    print("***Deleting 2")
+    b.delete(2)
+    
+    print(repr(b))
+    
+    print ("***Deleting 84")
+    b.delete(84)
+    
+    print(repr(b))
+    
+'''
+Here is the expected output from running this program. Depending on the order of 
+redistributing or coalescing, your output may vary. However, the end result in 
+every case should be the insertion or deletion of the item from the BTree. 
 
-	// Leaf nodes store pairs of keys and values.
-	struct LeafNode {
-#ifdef DEBUG
-		LeafNode() : type(NODE_LEAF), num_keys(0) {}
-		const NodeType type;
-#else
-		LeafNode() : num_keys(0) {}
-#endif
-		unsigned num_keys;
-		KEY      keys[M];
-		VALUE    values[M];
-		unsigned char _pad[LEAF_NODE_PADDING];
-	};
+My/Our name(s) is/are 
+BTree(2,
+ {1: BTreeNode(2,0,[None, None, None, None],[None, None, None, None, None],1)
+},1,2)
+***Inserting 10
+BTree(2,
+ {1: BTreeNode(2,1,[10, None, None, None],[None, None, None, None, None],1)
+},1,2)
+***Inserting 8
+BTree(2,
+ {1: BTreeNode(2,2,[8, 10, None, None],[None, None, None, None, None],1)
+},1,2)
+***Inserting 22
+BTree(2,
+ {1: BTreeNode(2,3,[8, 10, 22, None],[None, None, None, None, None],1)
+},1,2)
+***Inserting 14
+BTree(2,
+ {1: BTreeNode(2,4,[8, 10, 14, 22],[None, None, None, None, None],1)
+},1,2)
+***Inserting 12
+BTree(2,
+ {1: BTreeNode(2,2,[8, 10, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,2,[14, 22, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+},3,4)
+***Inserting 18
+BTree(2,
+ {1: BTreeNode(2,2,[8, 10, None, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,3,[14, 18, 22, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+},3,4)
+***Inserting 2
+BTree(2,
+ {1: BTreeNode(2,3,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,3,[14, 18, 22, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+},3,4)
+***Inserting 50
+BTree(2,
+ {1: BTreeNode(2,3,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,4,[14, 18, 22, 50],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, None, None, None],[1, 2, None, None, None],3)
+},3,4)
+***Inserting 15
+BTree(2,
+ {1: BTreeNode(2,3,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,2,[14, 15, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,2,[12, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,2,[22, 50, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 14
+**Redistribute From Left**
+BTree(2,
+ {1: BTreeNode(2,2,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,2,[12, 15, None, None],[None, None, None, None, None],2)
+, 3: BTreeNode(2,2,[10, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,2,[22, 50, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 50
+**Coalesce with Left Sibling in node with index 3
+BTree(2,
+ {1: BTreeNode(2,2,[2, 8, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,4,[12, 15, 18, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[10, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 8
+**Redistribute From Right**
+BTree(2,
+ {1: BTreeNode(2,2,[2, 10, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,3,[15, 18, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[12, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 12
+BTree(2,
+ {1: BTreeNode(2,2,[2, 10, 10, None],[None, None, None, None, None],1)
+, 2: BTreeNode(2,2,[18, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,1,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},3,5)
+***Deleting 18
+**Coalesce with Left Sibling in node with index 3
+BTree(2,
+ {1: BTreeNode(2,4,[2, 10, 15, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 2
+BTree(2,
+ {1: BTreeNode(2,3,[10, 15, 22, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 10
+BTree(2,
+ {1: BTreeNode(2,2,[15, 22, 22, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 22
+BTree(2,
+ {1: BTreeNode(2,1,[15, 22, 22, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 15
+BTree(2,
+ {1: BTreeNode(2,0,[15, 22, 22, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 54
+54 not found during delete.
+BTree(2,
+ {1: BTreeNode(2,0,[15, 22, 22, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 76
+76 not found during delete.
+BTree(2,
+ {1: BTreeNode(2,0,[15, 22, 22, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+***Inserting 14
+BTree(2,
+ {1: BTreeNode(2,1,[14, 22, 22, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 2
+2 not found during delete.
+BTree(2,
+ {1: BTreeNode(2,1,[14, 22, 22, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+***Deleting 84
+84 not found during delete.
+BTree(2,
+ {1: BTreeNode(2,1,[14, 22, 22, 22],[None, None, None, None, None],1)
+, 2: BTreeNode(2,1,[22, 22, 22, 22],[None, None, None, None, None],2)
+, 3: BTreeNode(2,0,[15, 18, None, None],[1, 2, 4, None, None],3)
+, 4: BTreeNode(2,1,[22, 50, None, None],[None, None, None, None, None],4)
+},1,5)
+'''
 
-	// Inner nodes store pointers to other nodes interleaved with keys.
-	struct InnerNode {
-#ifdef DEBUG
-		InnerNode() : type(NODE_INNER), num_keys(0) {}
-		const NodeType type;
-#else
-		InnerNode() : num_keys(0) {}
-#endif
-		unsigned num_keys;
-		KEY      keys[N];
-		void*    children[N+1];
-		unsigned char _pad[INNER_NODE_PADDING];
-	};
+def readRecord(file,recNum,recSize):
+    file.seek(recNum*recSize)
+    record = file.read(recSize)
+    return record
 
-	// Custom allocator that returns aligned blocks of memory
-	template <unsigned ALIGNMENT>
-	struct AlignedMemoryAllocator {
-		typedef std::size_t size_type;
-		typedef std::ptrdiff_t difference_type;
-		
-		static char* malloc(const size_type bytes)
-		{
-			void* result;
-			if( posix_memalign(&result, ALIGNMENT, bytes) != 0 ) {
-				result= 0;
-			}
-			// Alternative: result= std::malloc(bytes);
-			return reinterpret_cast<char*>(result);
-		}
-		static void free(char* const block)
-		{ std::free(block); }
-	};
+def readField(record,colTypes,fieldNum):
+    # fieldNum is zero based
+    # record is a string containing the record
+    # colTypes is the types for each of the columns in the record
+    
+    offset = 0
+    for i in range(fieldNum):
+        colType = colTypes[i]
+        
+        if colType == "int":
+            offset+=10
+        elif colType[:4] == "char":
+            size = int(colType[4:])
+            offset += size
+        elif colType == "float":
+            offset+=20
+        elif colType == "datetime":
+            offset+=24
 
-	// Returns a pointer to a fresh leaf node.
-	LeafNode* new_leaf_node() {
-		LeafNode* result;
-		//result= new LeafNode();
-		result= leafPool.construct();
-		//cout << "New LeafNode at " << result << endl;
-		return result;
-	}
+    colType = colTypes[fieldNum]
 
-	// Frees a leaf node previously allocated with new_leaf_node()
-	void delete_leaf_node(LeafNode* node) {
-		DEBUG_ASSERT( node->type == NODE_LEAF );
-		//cout << "Deleting LeafNode at " << node << endl;
-		// Alternatively: delete node;
-		leafPool.destroy(node);
-	}
+    if colType == "int":
+        value = record[offset:offset+10].strip()
+        if value == "null":
+            val = None
+        else:
+            val = int(value)
+    elif colType == "float":
+        value = record[offset:offset+20].strip()
+        if value == "null":
+            val = None
+        else:        
+            val = float(value)
+    elif colType[:4] == "char":
+        size = int(colType[4:])
+        value = record[offset:offset+size].strip()
+        if value == "null":
+            val = None
+        else:        
+            val = value[1:-1] # remove the ' and ' from each end of the string
+            if type(val) == bytes:
+                val = val.decode("utf-8") 
+    elif colType == "datetime":
+        value = record[offset:offset+24].strip()
+        if value == "null":
+            val = None
+        else:        
+            if type(val) == bytes:
+                val = val.decode("utf-8") 
+            val = datetime.datetime.strptime(val,'%m/%d/%Y %I:%M:%S %p')
+    else:
+        print("Unrecognized Type")
+        raise Exception("Unrecognized Type") 
+    
+    return val
 
-	// Returns a pointer to a fresh inner node.
-	InnerNode* new_inner_node() {
-		InnerNode* result;
-		// Alternatively: result= new InnerNode();
-		result= innerPool.construct();
-		//cout << "New InnerNode at " << result << endl;
-		return result;
-	}
+class Item:
+    def __init__(self,key,value):
+        self.key = key
+        self.value = value
+    
+    def __repr__(self):
+        return "Item("+repr(self.key)+","+repr(self.value)+")"
 
-	// Frees an inner node previously allocated with new_inner_node()
-	void delete_inner_node(InnerNode* node) {
-		DEBUG_ASSERT( node->type == NODE_INNER );
-		//cout << "Deleting InnerNode at " << node << endl;
-		// Alternatively: delete node;
-		innerPool.destroy(node);
-	}
-	
-	// Data type returned by the private insertion methods.
-	struct InsertionResult {
-		KEY key;
-		void* left;
-		void* right;
-	};
+    def __eq__(self,other):
+        if type(self) != type(other):
+            return False
 
-	// Returns the position where 'key' should be inserted in a leaf node
-	// that has the given keys.
-	static unsigned leaf_position_for(const KEY& key, const KEY* keys,
-			unsigned num_keys) {
-		// Simple linear search. Faster for small values of N or M
-		unsigned k= 0;
-		while((k < num_keys) && (keys[k]<key)) {
-			++k;
-		}
-		return k;
-		/*
-		// Binary search. It is faster when N or M is > 100,
-		// but the cost of the division renders it useless
-		// for smaller values of N or M.
-		XXX--- needs to be re-checked because the linear search
-		has changed since the last update to the following ---XXX
-		int left= -1, right= num_keys, middle;
-		while( right -left > 1 ) {
-			middle= (left+right)/2;
-			if( keys[middle] < key) {
-				left= middle;
-			} else {
-				right= middle;
-			}
-		}
-		//assert( right == k );
-		return unsigned(right);
-		*/
-	}
+        return self.key == other.key
+    
+    def __lt__(self,other):
+        return self.key < other.key
+    
+    def __gt__(self,other):
+        return self.key > other.key
+    
+    def __ge__(self,other):
+        return self.key >= other.key
+    
+    def getValue(self):
+        return self.value
+    
+    def getKey(self):
+        return self.key
+            
 
-	// Returns the position where 'key' should be inserted in an inner node
-	// that has the given keys.
-	static unsigned inner_position_for(const KEY& key, const KEY* keys,
-			unsigned num_keys) {
-		// Simple linear search. Faster for small values of N or M
-		unsigned k= 0;
-		while((k < num_keys) && ((keys[k]<key) || (keys[k]==key))) {
-			++k;
-		}
-		return k;
-		// Binary search is faster when N or M is > 100,
-		// but the cost of the division renders it useless
-		// for smaller values of N or M.
-	}
+def main():
+    # Select Feed.FeedNum, Feed.Name, FeedAttribType.Name, FeedAttribute.Value where
+    # Feed.FeedID = FeedAttribute.FeedID and FeedAttribute.FeedAtribTypeID = FeedAttribType.ID
+    attribTypeCols = ["int","char20","char60","int","int","int","int"]
+    feedCols = ["int","int","int","char50","datetime","float","float","int","char50","int"]
+    feedAttributeCols = ["int","int","float"]
+    
+    feedAttributeTable = open("FeedAttribute.tbl","r")
+    
+    if os.path.isfile("Feed.idx"):
+        indexFile = open("Feed.idx","r")
+        feedTableRecLength = int(indexFile.readline())
+        feedIndex = eval("".join(indexFile.readlines()))
+    else:
+        feedIndex = BTree(3)
+        feedTable = open("Feed.tbl","r")
+        offset = 0
+        for record in feedTable:
+            feedID = readField(record,feedCols,0)
+            anItem = Item(feedID,offset)
+            feedIndex.insert(anItem)
+            offset+=1
+            feedTableRecLength = len(record)
+         
+        print("Feed Table Index Created")  
+        indexFile = open("Feed.idx","w")
+        indexFile.write(str(feedTableRecLength)+"\n")
+        indexFile.write(repr(feedIndex)+"\n")
+        indexFile.close()
+        
+    if os.path.isfile("FeedAttribType.idx"):
+        indexFile = open("FeedAttribType.idx","r")
+        attribTypeTableRecLength = int(indexFile.readline())
+        attribTypeIndex = eval("".join(indexFile.readlines()))
+    else:
+        attribTypeIndex = BTree(3)
+        attribTable = open("FeedAttribType.tbl","r")
+        offset = 0
+        for record in attribTable:
+            feedAttribTypeID = readField(record,attribTypeCols,0)
+            anItem = Item(feedAttribTypeID,offset)
+            attribTypeIndex.insert(anItem)
+            offset+=1
+            attribTypeTableRecLength = len(record)
+         
+        print("Attrib Type Table Index Created")
+        indexFile = open("FeedAttribType.idx","w")
+        indexFile.write(str(attribTypeTableRecLength)+"\n")
+        indexFile.write(repr(attribTypeIndex)+"\n")
+        indexFile.close()
+    
+    feedTable = open("Feed.tbl","rb")
+    feedAttribTypeTable = open("FeedAttribType.tbl", "rb")
+    before = datetime.datetime.now()
+    for record in feedAttributeTable:
+        
+        feedID = readField(record,feedAttributeCols,0)
+        feedAttribTypeID = readField(record,feedAttributeCols,1)
+        value = readField(record,feedAttributeCols,2)
+          
+        lookupItem = Item(feedID,None)
+        item = feedIndex.retrieve(lookupItem)
+        offset = item.getValue()
+        feedRecord = readRecord(feedTable,offset,feedTableRecLength)   
+        feedNum = readField(feedRecord,feedCols,2)
+        feedName = readField(feedRecord,feedCols,3)
+        
+        lookupItem = Item(feedAttribTypeID,None)
+        item = attribTypeIndex.retrieve(lookupItem)
+        offset = item.getValue()
+        feedAttribTypeRecord = readRecord(feedAttribTypeTable,offset, \
+            attribTypeTableRecLength)               
+        feedAttribTypeName = readField(feedAttribTypeRecord,attribTypeCols,1)
+        
+        print(feedNum,feedName,feedAttribTypeName,value)
+    after = datetime.datetime.now()
+    deltaT = after - before
+    milliseconds = deltaT.total_seconds() * 1000    
+    print("Done. The total time for the query with indexing was",milliseconds, \
+        "milliseconds.")
+    
+if __name__ == "__main__":
+    main()
 
-	bool leaf_insert(LeafNode* node, KEY& key,
-			VALUE& value, InsertionResult* result) {
-		DEBUG_ASSERT( node->type == NODE_LEAF );
-		assert( node->num_keys <= M );
-		bool was_split= false;
-		// Simple linear search
-		unsigned i= leaf_position_for(key, node->keys, node->num_keys);
-		if( node->num_keys == M ) {
-			// The node was full. We must split it
-			unsigned treshold= (M+1)/2;
-			LeafNode* new_sibling= new_leaf_node();
-			new_sibling->num_keys= node->num_keys -treshold;
-			for(unsigned j=0; j < new_sibling->num_keys; ++j) {
-				new_sibling->keys[j]= node->keys[treshold+j];
-				new_sibling->values[j]=
-					node->values[treshold+j];
-			}
-			node->num_keys= treshold;
-			if( i < treshold ) {
-				// Inserted element goes to left sibling
-				leaf_insert_nonfull(node, key, value, i);
-			} else {
-				// Inserted element goes to right sibling
-				leaf_insert_nonfull(new_sibling, key, value,
-					i-treshold);
-			}
-			// Notify the parent about the split
-			was_split= true;
-			result->key= new_sibling->keys[0];
-			result->left= node;
-			result->right= new_sibling;
-		} else {
-			// The node was not full
-			leaf_insert_nonfull(node, key, value, i);
-		}
-		return was_split;
-	}
+"Class", "Import", "Def", "Except", "While". 
 
-	static void leaf_insert_nonfull(LeafNode* node, KEY& key, VALUE& value,
-			unsigned index) {
-		DEBUG_ASSERT( node->type == NODE_LEAF );
-		assert( node->num_keys < M );
-		assert( index <= M );
-		assert( index <= node->num_keys );
-		if( (index < M) && (node->num_keys!=0) && (node->keys[index] == key) ) {
-			// We are inserting a duplicate value.
-			// Simply overwrite the old one
-			node->values[index]= value;
-		} else {
-			// The key we are inserting is unique
-			for(unsigned i=node->num_keys; i > index; --i) {
-				node->keys[i]= node->keys[i-1];
-				node->values[i]= node->values[i-1];
-			}
-			node->num_keys++;
-			node->keys[index]= key;
-			node->values[index]= value;
-		}
-	}
-
-	bool inner_insert(InnerNode* node, unsigned depth, KEY& key,
-			VALUE& value, InsertionResult* result) {
-		DEBUG_ASSERT( node->type == NODE_INNER );
-		assert( depth != 0 );
-		// Early split if node is full.
-		// This is not the canonical algorithm for B+ trees,
-		// but it is simpler and does not break the definition.
-		bool was_split= false;
-		if( node->num_keys == N ) {
-			// Split
-			unsigned treshold= (N+1)/2;
-			InnerNode* new_sibling= new_inner_node();
-			new_sibling->num_keys= node->num_keys -treshold;
-			for(unsigned i=0; i < new_sibling->num_keys; ++i) {
-				new_sibling->keys[i]= node->keys[treshold+i];
-				new_sibling->children[i]=
-					node->children[treshold+i];
-			}
-			new_sibling->children[new_sibling->num_keys]=
-				node->children[node->num_keys];
-			node->num_keys= treshold-1;
-			// Set up the return variable
-			was_split= true;
-			result->key= node->keys[treshold-1];
-			result->left= node;
-			result->right= new_sibling;
-			// Now insert in the appropriate sibling
-			if( key < result->key ) {
-				inner_insert_nonfull(node, depth, key, value);
-			} else {
-				inner_insert_nonfull(new_sibling, depth, key,
-					value);
-			}
-		} else {
-			// No split
-			inner_insert_nonfull(node, depth, key, value);
-		}
-		return was_split;
-	}
-
-	void inner_insert_nonfull(InnerNode* node, unsigned depth, KEY& key,
-			VALUE& value) {
-		DEBUG_ASSERT( node->type == NODE_INNER );
-		assert( node->num_keys < N );
-		assert( depth != 0 );
-		// Simple linear search
-		unsigned index= inner_position_for(key, node->keys,
-			node->num_keys);
-		InsertionResult result;
-		bool was_split;
-		if( depth-1 == 0 ) {
-			// The children are leaf nodes
-			for(unsigned kk=0; kk < node->num_keys+1; ++kk) {
-				DEBUG_ASSERT( *reinterpret_cast<NodeType*>
-					(node->children[kk]) == NODE_LEAF );
-			}
-			was_split= leaf_insert(reinterpret_cast<LeafNode*>
-				(node->children[index]), key, value, &result);
-		} else {
-			// The children are inner nodes
-			for(unsigned kk=0; kk < node->num_keys+1; ++kk) {
-				DEBUG_ASSERT( *reinterpret_cast<NodeType*>
-					(node->children[kk]) == NODE_INNER );
-			}
-			InnerNode* child= reinterpret_cast<InnerNode*>
-				(node->children[index]);
-			was_split= inner_insert( child, depth-1, key, value,
-				&result);
-		}
-		if( was_split ) {
-			if( index == node->num_keys ) {
-				// Insertion at the rightmost key
-				node->keys[index]= result.key;
-				node->children[index]= result.left;
-				node->children[index+1]= result.right;
-				node->num_keys++;
-			} else {
-				// Insertion not at the rightmost key
-				node->children[node->num_keys+1]=
-					node->children[node->num_keys];
-				for(unsigned i=node->num_keys; i!=index; --i) {
-					node->children[i]= node->children[i-1];
-					node->keys[i]= node->keys[i-1];
-				}
-				node->children[index]= result.left;
-				node->children[index+1]= result.right;
-				node->keys[index]= result.key;
-				node->num_keys++;
-			}
-		} // else the current node is not affected
-	}
-
-	typedef AlignedMemoryAllocator<NODE_ALIGNMENT> AlignedAllocator;
-
-	// Node memory allocators. IMPORTANT NOTE: they must be declared
-	// before the root to make sure that they are properly initialised
-	// before being used to allocate any node.
-	boost::object_pool<InnerNode, AlignedAllocator> innerPool;
-	boost::object_pool<LeafNode, AlignedAllocator>  leafPool;
-	// Depth of the tree. A tree of depth 0 only has a leaf node.
-	unsigned depth;
-	// Pointer to the root node. It may be a leaf or an inner node, but
-	// it is never null.
-	void*    root;
-};
-
-#endif // !defined BPLUSTREE_HPP_227824
+python
